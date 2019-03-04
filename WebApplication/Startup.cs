@@ -25,11 +25,24 @@ namespace WebApplication
             Configuration = configuration;
         }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<AccountContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DevConnection"))
@@ -65,8 +78,7 @@ namespace WebApplication
                 app.UseHsts();
             }
 
-            app.UseCors(options => options.WithOrigins("http://localhost:4200"));
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseAuthentication();

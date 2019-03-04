@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Login
+        [EnableCors]
         [HttpGet]
         public async Task<ActionResult> GetAccount(LoginCOM loginCOM)
         {
