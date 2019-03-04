@@ -12,3 +12,17 @@ C:\Users\vito2\source\repos\WebApplication\WebApplication\obj\Debug\netcoreapp2.
 C:\Users\vito2\source\repos\WebApplication\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.pdb
 C:\Users\vito2\source\repos\WebApplication\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.dll
 C:\Users\vito2\source\repos\WebApplication\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.pdb
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.deps.json
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.runtimeconfig.json
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.runtimeconfig.dev.json
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.dll
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.pdb
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.csprojAssemblyReference.cache
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.csproj.CoreCompileInputs.cache
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorAssemblyInfo.cache
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorAssemblyInfo.cs
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.AssemblyInfoInputs.cache
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.AssemblyInfo.cs
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorTargetAssemblyInfo.cache
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.dll
+C:\Users\vito2\Documents\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.pdb

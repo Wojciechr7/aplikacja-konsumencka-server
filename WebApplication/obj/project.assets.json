@@ -12948,11 +12948,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\vito2\\source\\repos\\WebApplication\\WebApplication\\WebApplication.csproj",
+      "projectUniqueName": "C:\\Users\\vito2\\Documents\\GitHub\\aplikacja-konsumencka-server\\WebApplication\\WebApplication.csproj",
       "projectName": "WebApplication",
-      "projectPath": "C:\\Users\\vito2\\source\\repos\\WebApplication\\WebApplication\\WebApplication.csproj",
+      "projectPath": "C:\\Users\\vito2\\Documents\\GitHub\\aplikacja-konsumencka-server\\WebApplication\\WebApplication.csproj",
       "packagesPath": "C:\\Users\\vito2\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\vito2\\source\\repos\\WebApplication\\WebApplication\\obj\\",
+      "outputPath": "C:\\Users\\vito2\\Documents\\GitHub\\aplikacja-konsumencka-server\\WebApplication\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
