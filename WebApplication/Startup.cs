@@ -67,6 +67,7 @@ namespace WebApplication
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseAuthentication();
         }
     }
 }
