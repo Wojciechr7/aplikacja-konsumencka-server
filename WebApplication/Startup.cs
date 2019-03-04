@@ -65,6 +65,8 @@ namespace WebApplication
                 app.UseHsts();
             }
 
+            app.UseCors(options => options.WithOrigins("http://localhost:4200"));
+
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseAuthentication();
