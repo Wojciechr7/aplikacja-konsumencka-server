@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
         }
 
         // POST: api/Registration
-        [EnableCors]
+        [EnableCors("_myAllowSpecificOrigins")]
         [HttpPost]
         public async Task<ActionResult<AccountCOM>> PostAccount(AccountCOM accountCOM)
         {

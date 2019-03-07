@@ -28,8 +28,8 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Login
-        [EnableCors]
-        [HttpGet]
+        [EnableCors("_myAllowSpecificOrigins")]
+        [HttpPost]
         public async Task<ActionResult> GetAccount(LoginCOM loginCOM)
         {
             var account = await _context.Users.Where(x =>
