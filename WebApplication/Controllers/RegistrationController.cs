@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -27,13 +29,22 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<AccountCOM>> PostAccount(AccountCOM accountCOM)
         {
+
+            var account = await _context.Users.Where(x => x.Email == accountCOM.Email).ToListAsync();
+            if (account.Any())
+                return BadRequest(new { message = "This e-mail adress exist." });
+
+            var sha256 = SHA256.Create();
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(accountCOM.Password));
+            var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+
             _context.Users.Add(new Account
             {
                 Id = Guid.NewGuid().ToString(),
                 FirstName = accountCOM.FirstName,
                 LastName = accountCOM.LastName,
                 Email = accountCOM.Email,
-                Password = accountCOM.Password
+                Password = hash
             });
             await _context.SaveChangesAsync();
 

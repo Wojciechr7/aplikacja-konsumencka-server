@@ -40,3 +40,17 @@ C:\Users\robcyk\Desktop\Projects\aplikacja-konsumencka-server\WebApplication\obj
 C:\Users\robcyk\Desktop\Projects\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorAssemblyInfo.cache
 C:\Users\robcyk\Desktop\Projects\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorAssemblyInfo.cs
 C:\Users\robcyk\Desktop\Projects\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorTargetAssemblyInfo.cache
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.deps.json
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.runtimeconfig.json
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.runtimeconfig.dev.json
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.dll
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\bin\Debug\netcoreapp2.2\WebApplication.pdb
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.csprojAssemblyReference.cache
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.csproj.CoreCompileInputs.cache
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorAssemblyInfo.cache
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorAssemblyInfo.cs
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.AssemblyInfoInputs.cache
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.AssemblyInfo.cs
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.RazorTargetAssemblyInfo.cache
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.dll
+D:\Chirurg\Projekty\GitHub\aplikacja-konsumencka-server\WebApplication\obj\Debug\netcoreapp2.2\WebApplication.pdb
