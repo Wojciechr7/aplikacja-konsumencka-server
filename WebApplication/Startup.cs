@@ -45,7 +45,8 @@ namespace WebApplication
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<AccountContext>(options =>
+
+            services.AddDbContext<DataBaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DevConnection"))
             );
 
@@ -81,8 +82,8 @@ namespace WebApplication
 
             app.UseCors(MyAllowSpecificOrigins);
             app.UseHttpsRedirection();
-            app.UseMvc();
             app.UseAuthentication();
+            app.UseMvc();
         }
     }
 }

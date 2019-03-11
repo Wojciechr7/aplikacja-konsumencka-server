@@ -21,9 +21,9 @@ namespace WebApplication.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly AccountContext _context;
+        private readonly DataBaseContext _context;
 
-        public LoginController(AccountContext context)
+        public LoginController(DataBaseContext context)
         {
             _context = context;
         }
@@ -50,24 +50,25 @@ namespace WebApplication.Controllers
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
 
-            var claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Role, "user"));
+            var claim = new[] {
+                    new Claim(ClaimTypes.NameIdentifier /*JwtRegisteredClaimNames.NameId*/, account[0].Id)
+            };
 
             var token = new JwtSecurityToken(
                 issuer: "smesk.in",
                 audience: "readers",
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: signingCredentials,
-                claims: claims
+                claims: claim
                 );
 
-            return Ok(new AccountDTO
+            return Ok(new  AccountDTO
             {
                Token = new JwtSecurityTokenHandler().WriteToken(token),
                FirstName = account[0].FirstName,
                LastName = account[0].LastName,
-               Email = account[0].Email
-            });
+               Email = account[0].Email,
+        });
         }
     }
 }

@@ -17,9 +17,9 @@ namespace WebApplication.Controllers
     [ApiController]
     public class RegistrationController : ControllerBase
     {
-        private readonly AccountContext _context;
+        private readonly DataBaseContext _context;
 
-        public RegistrationController(AccountContext context)
+        public RegistrationController(DataBaseContext context)
         {
             _context = context;
         }
@@ -27,7 +27,7 @@ namespace WebApplication.Controllers
         // POST: api/Registration
         [EnableCors("_myAllowSpecificOrigins")]
         [HttpPost]
-        public async Task<ActionResult<AccountCOM>> PostAccount(AccountCOM accountCOM)
+        public async Task<ActionResult<AccountCOM>> PostAccount([FromBody] AccountCOM accountCOM)
         {
 
             var account = await _context.Users.Where(x => x.Email == accountCOM.Email).ToListAsync();
