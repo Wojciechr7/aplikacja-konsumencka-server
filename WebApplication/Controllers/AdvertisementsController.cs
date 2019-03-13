@@ -84,29 +84,34 @@ namespace WebApplication.Controllers
         public async Task<ActionResult<Advertisement>> PostAdvertisement(AdvertisementCOM advertisementCOM)
         {
             if(advertisementCOM.Description.Length > 500)
-                return BadRequest(new { message = "Description of the advertisement must have max 500 characters" });
+                return StatusCode(418, "Description of the advertisement must have max 500 characters");
             if (advertisementCOM.PhoneNumber.Length > 11)
-                return BadRequest(new { message = "Phone number of the advertisement must have max 11 characters" });
-            if (advertisementCOM.Adress.Length > 50)
-                return BadRequest(new { message = "Adress of the advertisement must have max 50 characters" });
-            if (advertisementCOM.Categories.Length > 30)
-                return BadRequest(new { message = "Categories of the advertisement must have max 30 characters" });
+                return StatusCode(418, "Phone number of the advertisement must have max 11 characters");
+            if (advertisementCOM.City.Length > 100)
+                return StatusCode(418, "City name of the advertisement must have max 100 characters");
+            if (advertisementCOM.Street.Length > 100)
+                return StatusCode(418, "Street name of the advertisement must have max 100 characters");
+            if (advertisementCOM.Category.Length > 30)
+                return StatusCode(418, "Category of the advertisement must have max 30 characters");
 
-            foreach(ImageCOM img in advertisementCOM.Images)
+            foreach (ImageCOM img in advertisementCOM.Images)
                 if(img.Description.Length > 100)
-                    return BadRequest(new { message = "Description of the advertisement image must have max 100 characters" });
+                    return StatusCode(418, "Description of the advertisement image must have max 100 characters");
 
             string _AdvertisementId = Guid.NewGuid().ToString();
 
             _context.Advertisements.Add(new Advertisement {
                 Id = _AdvertisementId,
                 UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                Title = advertisementCOM.Title,
                 Description = advertisementCOM.Description,
                 PhoneNumber = advertisementCOM.PhoneNumber,
                 Price = advertisementCOM.Price,
-                Adress = advertisementCOM.Adress,
+                City = advertisementCOM.City,
+                Street = advertisementCOM.Street,
                 Size = advertisementCOM.Size,
-                Categories = advertisementCOM.Categories
+                Category = advertisementCOM.Category,
+                Floor = advertisementCOM.Floor
             });
             
             foreach(ImageCOM adv in advertisementCOM.Images)
