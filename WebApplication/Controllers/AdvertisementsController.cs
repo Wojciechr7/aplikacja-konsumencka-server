@@ -121,7 +121,8 @@ namespace WebApplication.Controllers
                     Id = Guid.NewGuid().ToString(),
                     AdvertisementId = _AdvertisementId,
                     Image = adv.Image,
-                    Description = adv.Description
+                    Description = adv.Description,
+                    Name = adv.Name
                 });
             }
 
