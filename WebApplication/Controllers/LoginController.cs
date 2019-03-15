@@ -51,7 +51,7 @@ namespace WebApplication.Controllers
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
 
             var claim = new[] {
-                    new Claim(ClaimTypes.NameIdentifier /*JwtRegisteredClaimNames.NameId*/, account[0].Id)
+                    new Claim(ClaimTypes.NameIdentifier, account[0].Id)
             };
 
             var token = new JwtSecurityToken(
