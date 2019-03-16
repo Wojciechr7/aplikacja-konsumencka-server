@@ -41,18 +41,23 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Advertisements/5
-        /*[HttpGet("{id}")]
-        public async Task<ActionResult<Advertisement>> GetAdvertisement(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AdvertisementDetailsDTO>> GetAdvertisement(string id)
         {
             var advertisement = await _context.Advertisements.FindAsync(id);
-
             if (advertisement == null)
-            {
-                return NotFound();
-            }
+                return StatusCode(419, "Advertisement with this id does not exist");
 
-            return advertisement;
-        }*/
+            var user = await _context.Users.Where(x =>x.Id == advertisement.UserId).ToListAsync();
+            if (!user.Any())
+                return StatusCode(420, "The owner of the advertisement can not be found");
+
+            var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == advertisement.Id).ToListAsync();
+
+            AdvertisementDetailsDTO advertisementDetailsDTO = new AdvertisementDetailsDTO(advertisement, user[0], image);
+
+            return advertisementDetailsDTO;
+        }
 
         // PUT: api/Advertisements/5
         /*[HttpPut("{id}")]
