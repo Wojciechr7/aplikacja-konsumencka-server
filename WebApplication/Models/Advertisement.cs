@@ -16,5 +16,7 @@ namespace WebApplication.Models
         [Required] [Column(TypeName = "int")] public int Floor { get; set; }
         [Required] [Column(TypeName = "decimal(20, 2)")] public decimal Size { get; set; }
         [Required] [Column(TypeName = "varchar(30)")] public string Category { get; set; }
+
+        [Required] [ForeignKey("UserId")] public Account User { get; set; }
     }
 }
