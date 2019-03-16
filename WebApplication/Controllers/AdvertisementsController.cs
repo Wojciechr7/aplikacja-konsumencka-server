@@ -34,9 +34,7 @@ namespace WebApplication.Controllers
             var advertisements =  await _context.Advertisements.ToListAsync();
 
             foreach(Advertisement adv in advertisements)
-            {
-                advertisementsDetailsDTO.Add(new AdvertisementsDTO(adv.City, adv.Street, adv.Price, adv.Size, adv.Category));
-            }
+                advertisementsDetailsDTO.Add(new AdvertisementsDTO(adv));
             return advertisementsDetailsDTO;
         }
 

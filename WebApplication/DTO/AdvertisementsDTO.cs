@@ -1,4 +1,6 @@
-﻿namespace WebApplication.DTO
+﻿using WebApplication.Models;
+
+namespace WebApplication.DTO
 {
     public class AdvertisementsDTO
     {
@@ -8,13 +10,13 @@
         public decimal Size { get; set; }
         public string Category { get; set; }
 
-        public AdvertisementsDTO(string City, string Street, decimal Price, decimal Size, string Category)
+        public AdvertisementsDTO(Advertisement advertisement)
         {
-            this.City = City;
-            this.Street = Street;
-            this.Price = Price;
-            this.Size = Size;
-            this.Category = Category;
+            City = advertisement.City;
+            Street = advertisement.Street;
+            Price = advertisement.Price;
+            Size = advertisement.Size;
+            Category = advertisement.Category;
         }
     }
 }
