@@ -5,11 +5,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Commends;
+using WebApplication.DTO;
 using WebApplication.Models;
 
 namespace WebApplication.Controllers
@@ -28,11 +27,18 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Advertisements
-        /*[HttpGet]
-        public async Task<ActionResult<IEnumerable<Advertisement>>> GetAdvertisements()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetAdvertisements()
         {
-            return await _context.Advertisements.ToListAsync();
-        }*/
+            List<AdvertisementsDTO> advertisementsDetailsDTO = new List<AdvertisementsDTO>();
+            var advertisements =  await _context.Advertisements.ToListAsync();
+
+            foreach(Advertisement adv in advertisements)
+            {
+                advertisementsDetailsDTO.Add(new AdvertisementsDTO(adv.City, adv.Street, adv.Price, adv.Size, adv.Category));
+            }
+            return advertisementsDetailsDTO;
+        }
 
         // GET: api/Advertisements/5
         /*[HttpGet("{id}")]
