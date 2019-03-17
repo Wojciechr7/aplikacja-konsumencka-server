@@ -64,7 +64,7 @@ namespace WebApplication.Controllers
             return advertisementDetailsDTO;
         }
 
-        // GET: api/Advertisements/latest/5//10
+        // GET: api/Advertisements/latest/5/10
         [HttpGet("latest/{from}/{to}")]
         public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(int from, int to)
         {
@@ -86,9 +86,27 @@ namespace WebApplication.Controllers
             return advertisementsDetailsDTO;
         }
 
+        [HttpGet("latest/{quantity}")]
+        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(int quantity)
+        {
+            if (quantity <= 0)
+                return StatusCode(417, "The parameters must be greater than 0 and smaller than 2 147 483 648");
+
+            var advertisements = await _context.Advertisements.OrderByDescending(x => x.Date).Take(quantity).ToListAsync();
+
+            if (quantity < advertisements.Count)
+                quantity = advertisements.Count;
+
+            List<AdvertisementsDTO> advertisementsDetailsDTO = new List<AdvertisementsDTO>();
+            foreach (Advertisement adv in advertisements)
+                advertisementsDetailsDTO.Add(new AdvertisementsDTO(adv));
+
+            return advertisementsDetailsDTO;
+        }
+
         // GET: api/Advertisements/random/5
         [HttpGet("random/{quantity}")]
-        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetRandomAdvertisements(int quantity)
+        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetRandomAdvertisementsRange(int quantity)
         {
             if (quantity <= 0)
                 return StatusCode(417, "The parameter must be greater than 0 and smaller than 2 147 483 648");
