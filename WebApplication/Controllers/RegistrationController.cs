@@ -40,7 +40,7 @@ namespace WebApplication.Controllers
 
             _context.Users.Add(new Account
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid(),
                 FirstName = accountCOM.FirstName,
                 LastName = accountCOM.LastName,
                 Email = accountCOM.Email,

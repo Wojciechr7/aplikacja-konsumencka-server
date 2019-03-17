@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -39,9 +40,15 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Advertisements/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AdvertisementDetailsDTO>> GetAdvertisement(string id)
+        [HttpGet("{idStr}")]
+        public async Task<ActionResult<AdvertisementDetailsDTO>> GetAdvertisement(string idStr)
         {
+            Regex syntax = new Regex("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$");
+            if(!syntax.IsMatch(idStr))
+                return StatusCode(418, "The ID structure of the advertisement is incorrect");
+
+            Guid id = new Guid(idStr);
+
             var advertisement = await _context.Advertisements.FindAsync(id);
             if (advertisement == null)
                 return StatusCode(419, "Advertisement with this id does not exist");
@@ -107,11 +114,11 @@ namespace WebApplication.Controllers
                 if(img.Description.Length > 100)
                     return StatusCode(418, "Description of the advertisement image must have max 100 characters");
 
-            string _AdvertisementId = Guid.NewGuid().ToString();
+            Guid _AdvertisementId = Guid.NewGuid();
 
             _context.Advertisements.Add(new Advertisement {
                 Id = _AdvertisementId,
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                UserId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),
                 Title = advertisementCOM.Title,
                 Description = advertisementCOM.Description,
                 PhoneNumber = advertisementCOM.PhoneNumber,
@@ -128,7 +135,7 @@ namespace WebApplication.Controllers
             {
                 _context.AdvertisementImages.Add(new AdvertisementImage
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
                     AdvertisementId = _AdvertisementId,
                     Image = adv.Image,
                     Description = adv.Description,
@@ -157,7 +164,7 @@ namespace WebApplication.Controllers
             return advertisement;
         }*/
 
-        private bool AdvertisementExists(string id)
+        private bool AdvertisementExists(Guid id)
         {
             return _context.Advertisements.Any(e => e.Id == id);
         }

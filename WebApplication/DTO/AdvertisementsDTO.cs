@@ -1,10 +1,11 @@
-﻿using WebApplication.Models;
+﻿using System;
+using WebApplication.Models;
 
 namespace WebApplication.DTO
 {
     public class AdvertisementsDTO
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public decimal Price { get; set; }
