@@ -23,6 +23,7 @@ namespace WebApplication.DTO
         public string Street { get; set; }
         public int Floor { get; set; }
         public string Category { get; set; }
+        public DateTime Date { get; set; }
 
         public List<ImageDTO> Images = new List<ImageDTO>();
 
@@ -43,6 +44,7 @@ namespace WebApplication.DTO
             Street = advertisement.Street;
             Floor = advertisement.Floor;
             Category = advertisement.Category;
+            Date = advertisement.Date;
 
             foreach (AdvertisementImage advImg in image)
                 Images.Add( new ImageDTO(advImg.Image, advImg.Description, advImg.Name));

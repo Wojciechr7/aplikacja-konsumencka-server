@@ -120,7 +120,8 @@ namespace WebApplication.Controllers
                 Street = advertisementCOM.Street,
                 Size = advertisementCOM.Size,
                 Category = advertisementCOM.Category,
-                Floor = advertisementCOM.Floor
+                Floor = advertisementCOM.Floor,
+                Date = DateTime.Now
             });
             
             foreach(ImageCOM adv in advertisementCOM.Images)

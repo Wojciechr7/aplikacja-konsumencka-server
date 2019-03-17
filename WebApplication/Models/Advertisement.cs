@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Models
@@ -15,7 +16,8 @@ namespace WebApplication.Models
         [Required] [Column(TypeName = "varchar(100)")] public string Street { get; set; }
         [Required] [Column(TypeName = "int")] public int Floor { get; set; }
         [Required] [Column(TypeName = "decimal(20, 2)")] public decimal Size { get; set; }
-        [Required] [Column(TypeName = "varchar(30)")] public string Category { get; set; }
+                   [Column(TypeName = "varchar(30)")] public string Category { get; set; }
+        [Required] [Column(TypeName = "datetime")] public DateTime Date { get; set; }
 
         [Required] [ForeignKey("UserId")] public Account User { get; set; }
     }
