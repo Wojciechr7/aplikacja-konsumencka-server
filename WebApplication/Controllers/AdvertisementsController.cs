@@ -64,35 +64,68 @@ namespace WebApplication.Controllers
             return advertisementDetailsDTO;
         }
 
-        // PUT: api/Advertisements/5
-        /*[HttpPut("{id}")]
-        public async Task<IActionResult> PutAdvertisement(string id, Advertisement advertisement)
+        // GET: api/Advertisements/latest/5//10
+        [HttpGet("latest/{from}/{to}")]
+        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(int from, int to)
         {
-            if (id != advertisement.Id)
-            {
-                return BadRequest();
-            }
+            if (from <= 0 || to <= 0)
+                return StatusCode(417, "The parameters must be greater than 0 and smaller than 2 147 483 648");
+            if (from >= to)
+                return StatusCode(417, "The parameter 'for' must be less than parametr 'to'");
 
-            _context.Entry(advertisement).State = EntityState.Modified;
+            var advertisements = await _context.Advertisements.OrderByDescending(x => x.Date).ToListAsync();
 
-            try
+            if (to > advertisements.Count)
+                to = advertisements.Count;
+            if (from > advertisements.Count)
+                return StatusCode(416, "There are no more advertisements");
+
+            List<AdvertisementsDTO> advertisementsDetailsDTO = new List<AdvertisementsDTO>();
+            for (int i=from-1; i<to; i++)
+                advertisementsDetailsDTO.Add(new AdvertisementsDTO(advertisements[i]));
+            return advertisementsDetailsDTO;
+        }
+
+        // GET: api/Advertisements/random/5
+        [HttpGet("random/{quantity}")]
+        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetRandomAdvertisements(int quantity)
+        {
+            if (quantity <= 0)
+                return StatusCode(417, "The parameter must be greater than 0 and smaller than 2 147 483 648");
+
+            var advertisements = await _context.Advertisements.ToListAsync();
+
+            if (quantity > advertisements.Count)
+                quantity = advertisements.Count;
+
+            List<int> indexes = new List<int>();
+            int i = 0;
+            while(i < quantity)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AdvertisementExists(id))
+                Random rnd = new Random();
+                int number = rnd.Next(0, advertisements.Count);
+
+                bool flag = true;
+                foreach(int index in indexes)
+                    if(index == number)
+                    {
+                        flag = false;
+                        break;
+                    }
+
+                if(flag)
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
+                    indexes.Add(number);
+                    i++;
                 }
             }
 
-            return NoContent();
-        }*/
+            List<AdvertisementsDTO> randomAdvertisements = new List<AdvertisementsDTO>();
+            foreach(int index in indexes)
+                randomAdvertisements.Add( new AdvertisementsDTO(advertisements[index]));
+
+            return randomAdvertisements;
+        }
 
         // POST: api/Advertisements
         [HttpPost]
@@ -147,22 +180,6 @@ namespace WebApplication.Controllers
 
             return Created("advertisements", null);
         }
-
-        // DELETE: api/Advertisements/5
-        /*[HttpDelete("{id}")]
-        public async Task<ActionResult<Advertisement>> DeleteAdvertisement(string id)
-        {
-            var advertisement = await _context.Advertisements.FindAsync(id);
-            if (advertisement == null)
-            {
-                return NotFound();
-            }
-
-            _context.Advertisements.Remove(advertisement);
-            await _context.SaveChangesAsync();
-
-            return advertisement;
-        }*/
 
         private bool AdvertisementExists(Guid id)
         {
