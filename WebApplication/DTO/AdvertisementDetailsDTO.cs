@@ -8,6 +8,7 @@ namespace WebApplication.DTO
 {
     public class AdvertisementDetailsDTO
     {
+        public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -27,6 +28,7 @@ namespace WebApplication.DTO
 
         public AdvertisementDetailsDTO(Advertisement advertisement, Account user, List<AdvertisementImage> image)
         {
+            UserId = user.Id;
             FirstName = user.FirstName;
             LastName = user.LastName;
             Email = user.Email;
