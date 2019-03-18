@@ -11,15 +11,5 @@ namespace WebApplication.DTO
         public decimal Price { get; set; }
         public decimal Size { get; set; }
         public string Category { get; set; }
-
-        public AdvertisementsDTO(Advertisement advertisement)
-        {
-            Id = advertisement.Id;
-            City = advertisement.City;
-            Street = advertisement.Street;
-            Price = advertisement.Price;
-            Size = advertisement.Size;
-            Category = advertisement.Category;
-        }
     }
 }

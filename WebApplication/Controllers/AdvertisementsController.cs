@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -20,23 +21,22 @@ namespace WebApplication.Controllers
     public class AdvertisementsController : ControllerBase
     {
         private readonly DataBaseContext _context;
+        private readonly IMapper _mapper;
 
 
-        public AdvertisementsController(DataBaseContext context)
+        public AdvertisementsController(DataBaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Advertisements
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetAdvertisements()
         {
-            List<AdvertisementsDTO> advertisementsDetailsDTO = new List<AdvertisementsDTO>();
             var advertisements =  await _context.Advertisements.ToListAsync();
 
-            foreach(Advertisement adv in advertisements)
-                advertisementsDetailsDTO.Add(new AdvertisementsDTO(adv));
-            return advertisementsDetailsDTO;
+            return _mapper.Map<List<AdvertisementsDTO>>(advertisements); ;
         }
 
         // GET: api/Advertisements/5
@@ -80,12 +80,10 @@ namespace WebApplication.Controllers
             if (from > advertisements.Count)
                 return StatusCode(416, "There are no more advertisements");
 
-            List<AdvertisementsDTO> advertisementsDetailsDTO = new List<AdvertisementsDTO>();
-            for (int i=from-1; i<to; i++)
-                advertisementsDetailsDTO.Add(new AdvertisementsDTO(advertisements[i]));
-            return advertisementsDetailsDTO;
+            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.GetRange(from-1, to));
         }
 
+        // GET: api/Advertisements/latest/5
         [HttpGet("latest/{quantity}")]
         public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(int quantity)
         {
@@ -97,11 +95,7 @@ namespace WebApplication.Controllers
             if (quantity < advertisements.Count)
                 quantity = advertisements.Count;
 
-            List<AdvertisementsDTO> advertisementsDetailsDTO = new List<AdvertisementsDTO>();
-            foreach (Advertisement adv in advertisements)
-                advertisementsDetailsDTO.Add(new AdvertisementsDTO(adv));
-
-            return advertisementsDetailsDTO;
+            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.Take(quantity));
         }
 
         // GET: api/Advertisements/random/5
@@ -140,7 +134,7 @@ namespace WebApplication.Controllers
 
             List<AdvertisementsDTO> randomAdvertisements = new List<AdvertisementsDTO>();
             foreach(int index in indexes)
-                randomAdvertisements.Add( new AdvertisementsDTO(advertisements[index]));
+                randomAdvertisements.Add(_mapper.Map<AdvertisementsDTO>(advertisements[index]));
 
             return randomAdvertisements;
         }
@@ -167,31 +161,17 @@ namespace WebApplication.Controllers
 
             Guid _AdvertisementId = Guid.NewGuid();
 
-            _context.Advertisements.Add(new Advertisement {
-                Id = _AdvertisementId,
-                UserId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),
-                Title = advertisementCOM.Title,
-                Description = advertisementCOM.Description,
-                PhoneNumber = advertisementCOM.PhoneNumber,
-                Price = advertisementCOM.Price,
-                City = advertisementCOM.City,
-                Street = advertisementCOM.Street,
-                Size = advertisementCOM.Size,
-                Category = advertisementCOM.Category,
-                Floor = advertisementCOM.Floor,
-                Date = DateTime.Now
-            });
-            
+            Advertisement advertisement = _mapper.Map<Advertisement>(advertisementCOM);
+            advertisement.Id = _AdvertisementId;
+            advertisement.UserId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            _context.Advertisements.Add(advertisement);
+
             foreach(ImageCOM adv in advertisementCOM.Images)
             {
-                _context.AdvertisementImages.Add(new AdvertisementImage
-                {
-                    Id = Guid.NewGuid(),
-                    AdvertisementId = _AdvertisementId,
-                    Image = adv.Image,
-                    Description = adv.Description,
-                    Name = adv.Name
-                });
+                AdvertisementImage img = _mapper.Map<AdvertisementImage>(adv);
+                img.AdvertisementId = _AdvertisementId;
+                _context.AdvertisementImages.Add(img);
             }
 
             await _context.SaveChangesAsync();
