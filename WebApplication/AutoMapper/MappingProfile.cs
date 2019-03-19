@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 using WebApplication.Commends;
 using WebApplication.DTO;
 using WebApplication.Models;
@@ -19,6 +17,12 @@ namespace WebApplication.AutoMapper
                     y => y.MapFrom(src => DateTime.Now)
                 );
             CreateMap<ImageCOM, AdvertisementImage>()
+                .ForMember(
+                    x => x.Id,
+                    y => y.MapFrom(src => Guid.NewGuid())
+                );
+            CreateMap<Account, AccountDTO>();
+            CreateMap<AccountCOM, Account>()
                 .ForMember(
                     x => x.Id,
                     y => y.MapFrom(src => Guid.NewGuid())

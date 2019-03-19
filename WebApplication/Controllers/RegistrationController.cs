@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Commends;
@@ -18,10 +16,12 @@ namespace WebApplication.Controllers
     public class RegistrationController : ControllerBase
     {
         private readonly DataBaseContext _context;
+        private readonly IMapper _mapper;
 
-        public RegistrationController(DataBaseContext context)
+        public RegistrationController(DataBaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // POST: api/Registration
@@ -40,14 +40,7 @@ namespace WebApplication.Controllers
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(accountCOM.Password));
             var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 
-            _context.Users.Add(new Account
-            {
-                Id = Guid.NewGuid(),
-                FirstName = accountCOM.FirstName,
-                LastName = accountCOM.LastName,
-                Email = accountCOM.Email,
-                Password = hash
-            });
+            _context.Users.Add(_mapper.Map<Account>(accountCOM));
             await _context.SaveChangesAsync();
 
             return Created("users", null);

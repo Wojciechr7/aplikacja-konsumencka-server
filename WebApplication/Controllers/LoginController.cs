@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,12 @@ namespace WebApplication.Controllers
     public class LoginController : ControllerBase
     {
         private readonly DataBaseContext _context;
+        private readonly IMapper _mapper;
 
-        public LoginController(DataBaseContext context)
+        public LoginController(DataBaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // POST: api/Login
@@ -35,14 +38,12 @@ namespace WebApplication.Controllers
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(loginCOM.Password));
             string encodeHash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 
-            var account = await _context.Users.SingleOrDefaultAsync(x =>
+            Account account = await _context.Users.SingleOrDefaultAsync(x =>
                 x.Email == loginCOM.Email && x.Password == encodeHash
                 );
 
             if (account == null)
-            {
                 return BadRequest(new { message = "Invalid credentials." });
-            }
 
             string securityKey = "super_top-Security^KEY-03*03*2019.smesk.io";
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
@@ -60,13 +61,10 @@ namespace WebApplication.Controllers
                 claims: claim
                 );
 
-            return Ok(new  AccountDTO
-            {
-               Token = new JwtSecurityTokenHandler().WriteToken(token),
-               FirstName = account.FirstName,
-               LastName = account.LastName,
-               Email = account.Email,
-        });
+            AccountDTO accountDTO = _mapper.Map<AccountDTO>(account);
+            accountDTO.Token = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(accountDTO);
         }
     }
 }
