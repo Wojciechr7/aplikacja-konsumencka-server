@@ -29,9 +29,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<AccountCOM>> PostAccount([FromBody] AccountCOM accountCOM)
         {
+            var account = await _context.Users.SingleOrDefaultAsync(x =>
+                x.Email == accountCOM.Email
+                );
 
-            var account = await _context.Users.Where(x => x.Email == accountCOM.Email).ToListAsync();
-            if (account.Any())
+            if (account != null)
                 return BadRequest(new { message = "This e-mail adress exist." });
 
             var sha256 = SHA256.Create();

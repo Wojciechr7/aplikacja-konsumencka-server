@@ -35,11 +35,11 @@ namespace WebApplication.Controllers
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(loginCOM.Password));
             string encodeHash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 
-            var account = await _context.Users.Where(x =>
+            var account = await _context.Users.SingleOrDefaultAsync(x =>
                 x.Email == loginCOM.Email && x.Password == encodeHash
-                ).ToListAsync();
+                );
 
-            if (!account.Any())
+            if (account == null)
             {
                 return BadRequest(new { message = "Invalid credentials." });
             }
@@ -49,7 +49,7 @@ namespace WebApplication.Controllers
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
 
             var claim = new[] {
-                    new Claim(ClaimTypes.NameIdentifier, account[0].Id.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, account.Id.ToString())
             };
 
             var token = new JwtSecurityToken(
@@ -63,9 +63,9 @@ namespace WebApplication.Controllers
             return Ok(new  AccountDTO
             {
                Token = new JwtSecurityTokenHandler().WriteToken(token),
-               FirstName = account[0].FirstName,
-               LastName = account[0].LastName,
-               Email = account[0].Email,
+               FirstName = account.FirstName,
+               LastName = account.LastName,
+               Email = account.Email,
         });
         }
     }
