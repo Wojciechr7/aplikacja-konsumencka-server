@@ -29,7 +29,7 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<AccountCOM>> PostAccount([FromBody] AccountCOM accountCOM)
         {
-            var account = await _context.Users.SingleOrDefaultAsync(x =>
+            Account account = await _context.Users.SingleOrDefaultAsync(x =>
                 x.Email == accountCOM.Email
                 );
 
@@ -40,7 +40,10 @@ namespace WebApplication.Controllers
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(accountCOM.Password));
             var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 
-            _context.Users.Add(_mapper.Map<Account>(accountCOM));
+            account = _mapper.Map<Account>(accountCOM);
+            account.Password = hash;
+
+            _context.Users.Add(account);
             await _context.SaveChangesAsync();
 
             return Created("users", null);
