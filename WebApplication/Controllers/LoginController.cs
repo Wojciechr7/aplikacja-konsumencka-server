@@ -56,7 +56,7 @@ namespace WebApplication.Controllers
             var token = new JwtSecurityToken(
                 issuer: "smesk.in",
                 audience: "readers",
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddMonths(1),
                 signingCredentials: signingCredentials,
                 claims: claim
                 );
