@@ -80,7 +80,7 @@ namespace WebApplication.Controllers
             if (from > advertisements.Count)
                 return StatusCode(416, "There are no more advertisements");
 
-            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.GetRange(from-1, to));
+            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.GetRange(from-1, to-from+1));
         }
 
         // GET: api/Advertisements/latest/5
