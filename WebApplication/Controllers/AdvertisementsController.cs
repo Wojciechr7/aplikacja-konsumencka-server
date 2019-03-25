@@ -49,17 +49,21 @@ namespace WebApplication.Controllers
 
             Guid id = new Guid(idStr);
 
-            var advertisement = await _context.Advertisements.FindAsync(id);
+            Advertisement advertisement = await _context.Advertisements.FindAsync(id);
             if (advertisement == null)
                 return StatusCode(419, "Advertisement with this id does not exist");
 
-            var user = await _context.Users.Where(x =>x.Id == advertisement.UserId).ToListAsync();
-            if (!user.Any())
+            var user = await _context.Users.SingleOrDefaultAsync(x =>x.Id == advertisement.UserId);
+            if (user == null)
                 return StatusCode(420, "The owner of the advertisement can not be found");
 
             var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == advertisement.Id).ToListAsync();
 
-            AdvertisementDetailsDTO advertisementDetailsDTO = new AdvertisementDetailsDTO(advertisement, user[0], image);
+            AdvertisementDetailsDTO advertisementDetailsDTO = _mapper.Map<AdvertisementDetailsDTO>(advertisement);
+            advertisementDetailsDTO.Images = _mapper.Map<List<ImageDTO>>(image);
+            advertisementDetailsDTO.FirstName = user.FirstName;
+            advertisementDetailsDTO.LastName = user.LastName;
+            advertisementDetailsDTO.Email = user.Email;
 
             return advertisementDetailsDTO;
         }
