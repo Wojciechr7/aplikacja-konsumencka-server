@@ -57,13 +57,15 @@ namespace WebApplication.Controllers
             if (user == null)
                 return StatusCode(420, "The owner of the advertisement can not be found");
 
-            var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == advertisement.Id).ToListAsync();
+            List<AdvertisementImage> image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == advertisement.Id).ToListAsync();
+            Cities city = await _context.Cities.SingleOrDefaultAsync(x => x.Id == advertisement.City);
 
             AdvertisementDetailsDTO advertisementDetailsDTO = _mapper.Map<AdvertisementDetailsDTO>(advertisement);
             advertisementDetailsDTO.Images = _mapper.Map<List<ImageDTO>>(image);
             advertisementDetailsDTO.FirstName = user.FirstName;
             advertisementDetailsDTO.LastName = user.LastName;
             advertisementDetailsDTO.Email = user.Email;
+            advertisementDetailsDTO.City = city.Name;
 
             return advertisementDetailsDTO;
         }
@@ -152,12 +154,15 @@ namespace WebApplication.Controllers
                 return StatusCode(418, "Description of the advertisement must have max 500 characters");
             if (advertisementCOM.PhoneNumber.Length > 11)
                 return StatusCode(418, "Phone number of the advertisement must have max 11 characters");
-            if (advertisementCOM.City.Length > 100)
-                return StatusCode(418, "City name of the advertisement must have max 100 characters");
             if (advertisementCOM.Street.Length > 100)
                 return StatusCode(418, "Street name of the advertisement must have max 100 characters");
             if (advertisementCOM.Category.Length > 30)
                 return StatusCode(418, "Category of the advertisement must have max 30 characters");
+
+             List<Cities> City = await _context.Cities.Where(x => x.Id == advertisementCOM.City).ToListAsync();
+
+            if(!City.Any())
+                return StatusCode(418, "City ID doesn't exist in database");
 
             foreach (ImageCOM img in advertisementCOM.Images)
                 if(img.Description.Length > 100)
