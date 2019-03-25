@@ -29,6 +29,7 @@ namespace WebApplication.AutoMapper
                 );
             CreateMap<Advertisement, AdvertisementDetailsDTO>();
             CreateMap<AdvertisementImage, ImageDTO>();
+            CreateMap<Cities, CitiesDTO>();
         }
     }
 }
