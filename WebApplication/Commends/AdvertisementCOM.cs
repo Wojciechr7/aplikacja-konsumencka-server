@@ -10,7 +10,7 @@ namespace WebApplication.Commends
         public decimal Size { get; set; }
 
         public string Title { get; set; }
-        public string City { get; set; }
+        public int City { get; set; }
         public string Street { get; set; }
         public int Floor { get; set; }
         public string Category { get; set; }
