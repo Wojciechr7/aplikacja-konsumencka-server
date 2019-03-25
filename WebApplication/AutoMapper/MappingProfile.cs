@@ -27,6 +27,8 @@ namespace WebApplication.AutoMapper
                     x => x.Id,
                     y => y.MapFrom(src => Guid.NewGuid())
                 );
+            CreateMap<Advertisement, AdvertisementDetailsDTO>();
+            CreateMap<AdvertisementImage, ImageDTO>();
         }
     }
 }
