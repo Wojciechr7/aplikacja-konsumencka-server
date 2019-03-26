@@ -57,15 +57,12 @@ namespace WebApplication.Controllers
             if (user == null)
                 return StatusCode(420, "The owner of the advertisement can not be found");
 
-            List<AdvertisementImage> image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == advertisement.Id).ToListAsync();
+            List<AdvertisementImage> images = await _context.AdvertisementImages.Where(x => x.AdvertisementId == advertisement.Id).ToListAsync();
             Cities city = await _context.Cities.SingleOrDefaultAsync(x => x.Id == advertisement.City);
 
-            AdvertisementDetailsDTO advertisementDetailsDTO = _mapper.Map<AdvertisementDetailsDTO>(advertisement);
-            advertisementDetailsDTO.Images = _mapper.Map<List<ImageDTO>>(image);
-            advertisementDetailsDTO.FirstName = user.FirstName;
-            advertisementDetailsDTO.LastName = user.LastName;
-            advertisementDetailsDTO.Email = user.Email;
-            advertisementDetailsDTO.City = city.Name;
+            var advertisementDetailsDTO = _mapper.Map<Advertisement, AdvertisementDetailsDTO>(advertisement);
+            advertisementDetailsDTO = _mapper.Map(user, advertisementDetailsDTO);
+            advertisementDetailsDTO.Images = _mapper.Map<List<ImageDTO>>(images);
 
             return advertisementDetailsDTO;
         }
