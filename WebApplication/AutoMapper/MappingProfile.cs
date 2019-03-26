@@ -30,6 +30,11 @@ namespace WebApplication.AutoMapper
             CreateMap<Advertisement, AdvertisementDetailsDTO>();
             CreateMap<AdvertisementImage, ImageDTO>();
             CreateMap<Cities, CitiesDTO>();
+            CreateMap<Account, AdvertisementDetailsDTO>()
+                .ForMember(
+                    x => x.UserId,
+                    y => y.MapFrom(src => src.Id)
+                );
         }
     }
 }
