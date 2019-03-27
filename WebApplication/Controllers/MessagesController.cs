@@ -30,21 +30,21 @@ namespace WebApplication.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Messages/Sender/Recipient
-        [HttpGet("{sender}/{recipient}")]
-        public async Task<ActionResult<IEnumerable<MessagesDTO>>> GetMessages(string sender, string recipient)
+        // GET: api/Messages/Recipient
+        [HttpGet("{recipient}")]
+        public async Task<ActionResult<IEnumerable<MessagesDTO>>> GetMessages(string recipient)
         {
             Regex syntax = new Regex("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$");
-            if (!syntax.IsMatch(sender.ToLower()))
-                return StatusCode(418, "Sender ID structure of the advertisement is incorrect");
             if (!syntax.IsMatch(recipient.ToLower()))
                 return StatusCode(418, "Recipient ID structure of the advertisement is incorrect");
 
-            Guid senderGuid = new Guid(sender);
-            Guid recipientGuid = new Guid(recipient);
+            Guid user1 = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            Guid user2 = new Guid(recipient);
 
-            var messages = await _context.Messages.Where(x=> x.Sender == senderGuid && x.Recipient == recipientGuid)
-                .OrderByDescending(x => x.Date).ToListAsync();
+            var messages = await _context.Messages.Where( x=>
+                (x.Sender == user1 && x.Recipient == user2) ||
+                (x.Sender == user2 && x.Recipient == user2)
+                ).OrderByDescending(x => x.Date).ToListAsync();
 
             return _mapper.Map<List<MessagesDTO>>(messages);
         }
