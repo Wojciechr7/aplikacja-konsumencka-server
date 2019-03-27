@@ -35,6 +35,7 @@ namespace WebApplication.AutoMapper
                     x => x.UserId,
                     y => y.MapFrom(src => src.Id)
                 );
+            CreateMap<Messages, MessagesDTO>();
         }
     }
 }
