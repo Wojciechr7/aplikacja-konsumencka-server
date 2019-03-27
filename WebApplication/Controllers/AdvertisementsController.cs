@@ -44,7 +44,7 @@ namespace WebApplication.Controllers
         public async Task<ActionResult<AdvertisementDetailsDTO>> GetAdvertisement(string idStr)
         {
             Regex syntax = new Regex("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$");
-            if(!syntax.IsMatch(idStr))
+            if(!syntax.IsMatch(idStr.ToLower()))
                 return StatusCode(418, "The ID structure of the advertisement is incorrect");
 
             Guid id = new Guid(idStr);
@@ -149,8 +149,6 @@ namespace WebApplication.Controllers
         {
             if(advertisementCOM.Description.Length > 500)
                 return StatusCode(418, "Description of the advertisement must have max 500 characters");
-            if (advertisementCOM.PhoneNumber.Length > 11)
-                return StatusCode(418, "Phone number of the advertisement must have max 11 characters");
             if (advertisementCOM.Street.Length > 100)
                 return StatusCode(418, "Street name of the advertisement must have max 100 characters");
             if (advertisementCOM.Category.Length > 30)

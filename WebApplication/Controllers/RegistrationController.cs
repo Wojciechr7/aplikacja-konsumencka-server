@@ -29,6 +29,9 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<AccountCOM>> PostAccount([FromBody] AccountCOM accountCOM)
         {
+            if (accountCOM.PhoneNumber.Length > 11)
+            return StatusCode(418, "Phone number of the advertisement must have max 11 characters");
+
             Account account = await _context.Users.SingleOrDefaultAsync(x =>
                 x.Email == accountCOM.Email
                 );

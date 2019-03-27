@@ -5,7 +5,6 @@ namespace WebApplication.Commends
     public class AdvertisementCOM
     {
         public string Description { get; set; }
-        public string PhoneNumber { get; set; }
         public decimal Price { get; set; }
         public decimal Size { get; set; }
 
