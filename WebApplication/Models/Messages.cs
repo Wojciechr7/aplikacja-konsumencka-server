@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Models
 {
-    public class Messeges
+    public class Messages
     {
              [Key] [Column(TypeName = "int")] public int? Id { get; set; }
         [Required] [Column(TypeName = "uniqueidentifier")] public Guid Sender { get; set; }

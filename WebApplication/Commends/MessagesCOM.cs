@@ -1,6 +1,6 @@
 ﻿namespace WebApplication.Commends
 {
-    public class MessegesCOM
+    public class MessagesCOM
     {
         public string Contents { get; set; }
     }

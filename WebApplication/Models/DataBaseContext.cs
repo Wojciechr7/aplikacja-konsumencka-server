@@ -13,6 +13,6 @@ namespace WebApplication.Models
         public DbSet<Advertisement> Advertisements { get; set; }
         public DbSet<AdvertisementImage> AdvertisementImages { get; set; }
         public DbSet<Cities> Cities { get; set; }
-        public DbSet<Messeges> Messeges { get; set; }
+        public DbSet<Messages> Messages { get; set; }
     }
 }
