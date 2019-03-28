@@ -13,15 +13,16 @@ namespace XUnitTestProject1
         public async void Test1()
         {
             var builder = new DbContextOptionsBuilder<DataBaseContext>()
-                .EnableSensitiveDataLogging();
+                .EnableSensitiveDataLogging()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             using (var context = new DataBaseContext(builder.Options))
             {
                 AdvertisementsController advertisementsController = new AdvertisementsController(context);
 
-                var request = await advertisementsController.GetAdvertisement("a3f01e0a-b424-4493-a676-2446e340f151");
+                var request = await advertisementsController.GetAdvertisement("AFD45B0-0B0C-4A1B-A0D0-012EC2301C7A");
 
-                //Assert.Equal(4, request);
+                Assert.Equal("fawwew", request.Value.Title);
             }
         }
     }
