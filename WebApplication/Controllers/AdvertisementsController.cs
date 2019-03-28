@@ -67,23 +67,58 @@ namespace WebApplication.Controllers
             return advertisementDetailsDTO;
         }
 
-        // GET: api/Advertisements/latest/5/10
-        [HttpGet("latest/{from}/{to}")]
-        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(int from, int to)
+        // GET: api/Advertisements/city/desc:2
+        [HttpGet("{parameter}/{type}:{page}")]
+        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(string parameter, string type, int page)
         {
-            if (from <= 0 || to <= 0)
-                return StatusCode(417, "The parameters must be greater than 0 and smaller than 2 147 483 648");
-            if (from >= to)
-                return StatusCode(417, "The parameter 'for' must be less than parametr 'to'");
+            parameter = parameter.ToLower();
+            type = type.ToLower();
 
-            var advertisements = await _context.Advertisements.OrderByDescending(x => x.Date).ToListAsync();
+            if (parameter != "price" && parameter != "city" && parameter != "size" && parameter != "category" && parameter != "date")
+                return StatusCode(417, "Parameter name not exist");
 
-            if (to > advertisements.Count)
-                to = advertisements.Count;
-            if (from > advertisements.Count)
-                return StatusCode(416, "There are no more advertisements");
+            if (page <= 0)
+                return StatusCode(417, "Number page must be greater than zero");
 
-            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.GetRange(from-1, to-from+1));
+            if (type != "asc" && type != "desc")
+                return StatusCode(417, "Type of sort not exist");
+
+            List<Advertisement> advertisements = new List<Advertisement>();
+
+            if (parameter == "price" && type == "desc")
+                advertisements = await _context.Advertisements.OrderByDescending(x => x.Price).ToListAsync();
+
+            else if (parameter == "city" && type == "desc")
+                advertisements = await _context.Advertisements.OrderByDescending(x => x.City).ToListAsync();
+
+            else if (parameter == "size" && type == "desc")
+                advertisements = await _context.Advertisements.OrderByDescending(x => x.Size).ToListAsync();
+
+            else if (parameter == "category" && type == "desc")
+                advertisements = await _context.Advertisements.OrderByDescending(x => x.Category).ToListAsync();
+
+            else if (parameter == "date" && type == "desc")
+                advertisements = await _context.Advertisements.OrderByDescending(x => x.Date).ToListAsync();
+
+            else if (parameter == "city" && type == "asc")
+                advertisements = await _context.Advertisements.OrderBy(x => x.City).ToListAsync();
+
+            else if (parameter == "size" && type == "asc")
+                advertisements = await _context.Advertisements.OrderBy(x => x.Size).ToListAsync();
+
+            else if (parameter == "category" && type == "asc")
+                advertisements = await _context.Advertisements.OrderBy(x => x.Category).ToListAsync();
+
+            else if (parameter == "date" && type == "asc")
+                advertisements = await _context.Advertisements.OrderBy(x => x.Date).ToListAsync();
+
+            else if (parameter == "price" && type == "asc")
+                advertisements = await _context.Advertisements.OrderBy(x => x.Price).ToListAsync();
+
+            if (advertisements.Count < page * 10 - 10)
+                return StatusCode(418, "No data to display");
+
+            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.Skip(page*10-10).Take(10));
         }
 
         // GET: api/Advertisements/latest/5
