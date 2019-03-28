@@ -71,8 +71,14 @@ namespace WebApplication.Controllers
         [HttpGet("{parameter}/{type}:{page}")]
         public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(string parameter, string type, int page)
         {
+            parameter = parameter.ToLower();
+            type = type.ToLower();
+
             if (parameter != "price" && parameter != "city" && parameter != "size" && parameter != "category" && parameter != "date")
                 return StatusCode(417, "Parameter name not exist");
+
+            if (page <= 0)
+                return StatusCode(417, "Number page must be greater than zero");
 
             if (type != "asc" && type != "desc")
                 return StatusCode(417, "Type of sort not exist");
@@ -109,8 +115,10 @@ namespace WebApplication.Controllers
             else if (parameter == "price" && type == "asc")
                 advertisements = await _context.Advertisements.OrderBy(x => x.Price).ToListAsync();
 
+            if (advertisements.Count < page * 10 - 10)
+                return StatusCode(418, "No data to display");
 
-            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.GetRange(page * 10 - 10, 10));
+            return _mapper.Map<List<AdvertisementsDTO>>(/*advertisements.GetRange(page * 10 - 10, 10)*/ advertisements.Skip(page*10-10).Take(10));
         }
 
         // GET: api/Advertisements/latest/5
