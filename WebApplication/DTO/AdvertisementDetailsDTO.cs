@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication.Models;
 
 namespace WebApplication.DTO
 {
@@ -26,28 +23,5 @@ namespace WebApplication.DTO
         public DateTime Date { get; set; }
 
         public List<ImageDTO> Images = new List<ImageDTO>();
-
-        public AdvertisementDetailsDTO(Advertisement advertisement, Account user, List<AdvertisementImage> image)
-        {
-            UserId = user.Id;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            Email = user.Email;
-
-            Description = advertisement.Description;
-            PhoneNumber = advertisement.PhoneNumber;
-            Price = advertisement.Price;
-            Size = advertisement.Size;
-
-            Title = advertisement.Title;
-            City = advertisement.City;
-            Street = advertisement.Street;
-            Floor = advertisement.Floor;
-            Category = advertisement.Category;
-            Date = advertisement.Date;
-
-            foreach (AdvertisementImage advImg in image)
-                Images.Add( new ImageDTO(advImg.Image, advImg.Description, advImg.Name));
-        }
     }
 }
