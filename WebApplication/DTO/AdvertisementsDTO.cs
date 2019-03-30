@@ -6,6 +6,7 @@ namespace WebApplication.DTO
     public class AdvertisementsDTO
     {
         public Guid Id { get; set; }
+        public string Title { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public decimal Price { get; set; }
