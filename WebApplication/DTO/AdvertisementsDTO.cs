@@ -1,5 +1,4 @@
 ﻿using System;
-using WebApplication.Models;
 
 namespace WebApplication.DTO
 {
@@ -12,5 +11,7 @@ namespace WebApplication.DTO
         public decimal Price { get; set; }
         public decimal Size { get; set; }
         public string Category { get; set; }
+
+        public ImageDTO Image { get; set; }
     }
 }
