@@ -62,7 +62,7 @@ namespace WebApplication.Controllers
 
             var advertisementDetailsDTO = _mapper.Map<Advertisement, AdvertisementDetailsDTO>(advertisement);
             advertisementDetailsDTO = _mapper.Map(user, advertisementDetailsDTO);
-            advertisementDetailsDTO = _mapper.Map(images, advertisementDetailsDTO);
+            advertisementDetailsDTO.Images = _mapper.Map<List<ImageDTO>>(images);
 
             return advertisementDetailsDTO;
         }
