@@ -231,6 +231,36 @@ namespace WebApplication.Controllers
             return Created("advertisements", null);
         }
 
+        // GET: api/Advertisements/users/id
+        [HttpGet("users/{id}")]
+        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetUserAdvertisements(Guid id)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+                return NotFound();
+
+            var adv = await _context.Advertisements.Where(x => x.UserId == id).ToListAsync();
+            if (adv == null)
+                return NotFound();
+
+            List<AdvertisementsDTO> advDDTO = new List<AdvertisementsDTO>();
+
+            foreach(Advertisement a in adv)
+            {
+                var imgs = await _context.AdvertisementImages.Where(x => x.AdvertisementId == a.Id).Take(1).ToListAsync();
+
+                AdvertisementsDTO advertisementDetails = new AdvertisementsDTO();
+                advertisementDetails = _mapper.Map<AdvertisementsDTO>(a);
+
+                Random rnd = new Random();
+                int number = rnd.Next(0, imgs.Count);
+                advertisementDetails.Image = _mapper.Map<ImageDTO>(imgs[number]);
+                advDDTO.Add(advertisementDetails);
+            }
+
+            return Ok(advDDTO);
+        }
+
         private bool AdvertisementExists(Guid id)
         {
             return _context.Advertisements.Any(e => e.Id == id);
