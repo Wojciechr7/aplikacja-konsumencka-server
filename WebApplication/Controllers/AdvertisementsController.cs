@@ -118,7 +118,15 @@ namespace WebApplication.Controllers
             if (advertisements.Count < page * 10 - 10)
                 return StatusCode(418, "No data to display");
 
-            return _mapper.Map<List<AdvertisementsDTO>>(advertisements.Skip(page*10-10).Take(10));
+            var advDTO = _mapper.Map<List<AdvertisementsDTO>>(advertisements.Skip(page * 10 - 10).Take(10));
+
+            foreach(AdvertisementsDTO a in advDTO)
+            {
+                var City = await _context.Cities.SingleOrDefaultAsync(x => x.Id == int.Parse(a.City));
+                a.City = City.Name;
+            }
+
+            return advDTO;
         }
 
         // GET: api/Advertisements/latest/5
