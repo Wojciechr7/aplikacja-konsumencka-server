@@ -124,8 +124,13 @@ namespace WebApplication.Controllers
             {
                 var City = await _context.Cities.SingleOrDefaultAsync(x => x.Id == int.Parse(a.City));
                 a.City = City.Name;
-            }
 
+                var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == a.Id).ToListAsync();
+
+                Random rnd = new Random();
+                int number = rnd.Next(0, image.Count);
+                a.Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[number]);
+            }
             return advDTO;
         }
 
