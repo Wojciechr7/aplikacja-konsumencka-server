@@ -35,8 +35,22 @@ namespace WebApplication.Controllers
         public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetAdvertisements()
         {
             var advertisements =  await _context.Advertisements.ToListAsync();
+            var list = new List<AdvertisementsDTO>();
 
-            return _mapper.Map<List<AdvertisementsDTO>>(advertisements); ;
+            foreach (Advertisement a in advertisements)
+            {
+                var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == a.Id).ToListAsync();
+
+                Random rnd = new Random();
+                int number = rnd.Next(0, image.Count);
+                var Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[number]);
+
+                var element = _mapper.Map<AdvertisementsDTO>(a);
+                element.Image = Image;
+                list.Add(element);
+            }
+
+            return list;
         }
 
         // GET: api/Advertisements/5
