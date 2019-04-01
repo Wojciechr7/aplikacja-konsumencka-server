@@ -12,6 +12,7 @@ using WebApplication.Models;
 namespace WebApplication.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("_myAllowSpecificOrigins")]
     [ApiController]
     public class RegistrationController : ControllerBase
     {
