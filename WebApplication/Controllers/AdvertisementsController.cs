@@ -69,7 +69,7 @@ namespace WebApplication.Controllers
 
         // GET: api/Advertisements/city/desc:2
         [HttpGet("{parameter}/{type}:{page}")]
-        public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(string parameter, string type, int page)
+        public async Task<ActionResult<AdverisementsWithPageToEndDTO>> GetLatestAdvertisements(string parameter, string type, int page)
         {
             parameter = parameter.ToLower();
             type = type.ToLower();
@@ -116,7 +116,7 @@ namespace WebApplication.Controllers
                 advertisements = await _context.Advertisements.OrderBy(x => x.Price).ToListAsync();
 
             if (advertisements.Count < page * 10 - 10)
-                return StatusCode(418, "No data to display");
+                return NoContent();
 
             var advDTO = _mapper.Map<List<AdvertisementsDTO>>(advertisements.Skip(page * 10 - 10).Take(10));
 
@@ -131,7 +131,18 @@ namespace WebApplication.Controllers
                 int number = rnd.Next(0, image.Count);
                 a.Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[number]);
             }
-            return advDTO;
+
+            int pagesToEnd = await _context.Advertisements.CountAsync();
+            if (pagesToEnd % 10 == 0)
+                pagesToEnd = pagesToEnd / 10 - page;
+            else
+                pagesToEnd = pagesToEnd / 10 - page + 1;
+
+            return new AdverisementsWithPageToEndDTO
+            {
+                Advertisement = advDTO,
+                PagesToEnd = pagesToEnd
+            };
         }
 
         // GET: api/Advertisements/latest/5
