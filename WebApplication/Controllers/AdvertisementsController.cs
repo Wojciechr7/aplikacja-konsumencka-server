@@ -41,9 +41,9 @@ namespace WebApplication.Controllers
             {
                 var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == a.Id).ToListAsync();
 
-                Random rnd = new Random();
-                int number = rnd.Next(0, image.Count);
-                var Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[number]);
+                ImageDTO Image = null;
+                if (image.Count > 0)
+                    Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[0]);
 
                 var element = _mapper.Map<AdvertisementsDTO>(a);
                 element.Image = Image;
@@ -290,9 +290,10 @@ namespace WebApplication.Controllers
                 AdvertisementsDTO advertisementDetails = new AdvertisementsDTO();
                 advertisementDetails = _mapper.Map<AdvertisementsDTO>(a);
 
-                Random rnd = new Random();
-                int number = rnd.Next(0, imgs.Count);
-                advertisementDetails.Image = _mapper.Map<ImageDTO>(imgs[number]);
+                if (imgs.Count > 0)
+                    advertisementDetails.Image = _mapper.Map<ImageDTO>(imgs[0]);
+                else
+                    advertisementDetails.Image = null;
                 advDDTO.Add(advertisementDetails);
             }
 
