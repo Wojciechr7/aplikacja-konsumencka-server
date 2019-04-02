@@ -88,7 +88,8 @@ namespace WebApplication.Controllers
             parameter = parameter.ToLower();
             type = type.ToLower();
 
-            if (parameter != "price" && parameter != "city" && parameter != "size" && parameter != "category" && parameter != "date")
+            if (parameter != "price" && parameter != "city" && parameter != "size" && parameter != "category" && parameter != "date"
+                && parameter != "title" && parameter != "description")
                 return StatusCode(417, "Parameter name not exist");
 
             if (page <= 0)
@@ -128,6 +129,18 @@ namespace WebApplication.Controllers
 
             else if (parameter == "price" && type == "asc")
                 advertisements = await _context.Advertisements.OrderBy(x => x.Price).ToListAsync();
+
+            else if (parameter == "title" && type == "desc")
+                advertisements = await _context.Advertisements.OrderByDescending(x => x.Title).ToListAsync();
+
+            else if (parameter == "title" && type == "asc")
+                advertisements = await _context.Advertisements.OrderBy(x => x.Title).ToListAsync();
+
+            else if (parameter == "description" && type == "asc")
+                advertisements = await _context.Advertisements.OrderBy(x => x.Description).ToListAsync();
+
+            else if (parameter == "description" && type == "desc")
+                advertisements = await _context.Advertisements.OrderByDescending(x => x.Description).ToListAsync();
 
             if (advertisements.Count < page * 10 - 10)
                 return NoContent();
