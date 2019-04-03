@@ -154,9 +154,10 @@ namespace WebApplication.Controllers
 
                 var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == a.Id).ToListAsync();
 
-                Random rnd = new Random();
-                int number = rnd.Next(0, image.Count);
-                a.Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[number]);
+                if (image.Count > 0)
+                    a.Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[0]);
+                else
+                    a.Image = null;
             }
 
             int pagesToEnd = await _context.Advertisements.CountAsync();
