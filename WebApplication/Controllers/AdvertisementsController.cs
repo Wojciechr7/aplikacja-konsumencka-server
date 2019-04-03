@@ -174,10 +174,14 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Advertisements/title/desc:2/content
-        [HttpGet("title/{type}:{page}/{content}")]
-        public async Task<ActionResult<AdverisementsWithPageToEndDTO>> BrowseAdv(string type, int page, string content)
+        [HttpGet("{parametr}/{type}:{page}/{content}")]
+        public async Task<ActionResult<AdverisementsWithPageToEndDTO>> BrowseAdv(string parametr, string type, int page, string content)
         {
             type = type.ToLower();
+            parametr = parametr.ToLower();
+
+            if (parametr != "title")
+                return StatusCode(417, "Parameter name not exist");
 
             if (page <= 0)
                 return StatusCode(417, "Number page must be greater than zero");
@@ -197,10 +201,13 @@ namespace WebApplication.Controllers
             if (advertisements.Count < page * 10 - 10)
                 return NoContent();
 
-            if (type == "desc")
-                adv = adv.OrderByDescending(x => x.Title).ToList();
-            else
-                adv = adv.OrderBy(x => x.Title).ToList();
+            if(parametr == "title")
+            {
+                if (type == "desc")
+                    adv = adv.OrderByDescending(x => x.Title).ToList();
+                else
+                    adv = adv.OrderBy(x => x.Title).ToList();
+            }
 
             var advDTO = _mapper.Map<List<AdvertisementsDTO>>(adv.Skip(page * 10 - 10).Take(10));
 
