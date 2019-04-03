@@ -173,14 +173,16 @@ namespace WebApplication.Controllers
             };
         }
 
-        // GET: api/Advertisements/title/desc:2/content
-        [HttpGet("{parametr}/{type}:{page}/{content}")]
-        public async Task<ActionResult<AdverisementsWithPageToEndDTO>> BrowseAdv(string parametr, string type, int page, string content)
+        // GET: api/Advertisements/city/desc:2/content
+        [HttpGet("{parameter}/{type}:{page}/{content}")]
+        public async Task<ActionResult<AdverisementsWithPageToEndDTO>> BroseAdv(string parameter, string type, int page, string content)
         {
+            parameter = parameter.ToLower();
             type = type.ToLower();
-            parametr = parametr.ToLower();
+            content = content.ToLower();
 
-            if (parametr != "title")
+            if (parameter != "price" && parameter != "city" && parameter != "size" && parameter != "category" && parameter != "date"
+                && parameter != "title" && parameter != "description")
                 return StatusCode(417, "Parameter name not exist");
 
             if (page <= 0)
@@ -189,27 +191,54 @@ namespace WebApplication.Controllers
             if (type != "asc" && type != "desc")
                 return StatusCode(417, "Type of sort not exist");
 
-            List<Advertisement> advertisements = await _context.Advertisements.ToListAsync();
-            var adv = new List<Advertisement>();
+            List<Advertisement> advertisements = await _context.Advertisements.Where(x => x.Title.Contains(content)).ToListAsync();
 
-            foreach(var a in advertisements)
-            {
-                if (a.Title.Contains(content) == true)
-                    adv.Add(a);
-            }
+            if (parameter == "price" && type == "desc")
+                advertisements = advertisements.OrderByDescending(x => x.Price).ToList();
+
+            else if (parameter == "city" && type == "desc")
+                advertisements = advertisements.OrderByDescending(x => x.City).ToList();
+
+            else if (parameter == "size" && type == "desc")
+                advertisements = advertisements.OrderByDescending(x => x.Size).ToList();
+
+            else if (parameter == "category" && type == "desc")
+                advertisements = advertisements.OrderByDescending(x => x.Category).ToList();
+
+            else if (parameter == "date" && type == "desc")
+                advertisements = advertisements.OrderByDescending(x => x.Date).ToList();
+
+            else if (parameter == "city" && type == "asc")
+                advertisements = advertisements.OrderBy(x => x.City).ToList();
+
+            else if (parameter == "size" && type == "asc")
+                advertisements = advertisements.OrderBy(x => x.Size).ToList();
+
+            else if (parameter == "category" && type == "asc")
+                advertisements = advertisements.OrderBy(x => x.Category).ToList();
+
+            else if (parameter == "date" && type == "asc")
+                advertisements = advertisements.OrderBy(x => x.Date).ToList();
+
+            else if (parameter == "price" && type == "asc")
+                advertisements = advertisements.OrderBy(x => x.Price).ToList();
+
+            else if (parameter == "title" && type == "desc")
+                advertisements = advertisements.OrderByDescending(x => x.Title).ToList();
+
+            else if (parameter == "title" && type == "asc")
+                advertisements = advertisements.OrderBy(x => x.Title).ToList();
+
+            else if (parameter == "description" && type == "asc")
+                advertisements = advertisements.OrderBy(x => x.Description).ToList();
+
+            else if (parameter == "description" && type == "desc")
+                advertisements = advertisements.OrderByDescending(x => x.Description).ToList();
 
             if (advertisements.Count < page * 10 - 10)
                 return NoContent();
 
-            if(parametr == "title")
-            {
-                if (type == "desc")
-                    adv = adv.OrderByDescending(x => x.Title).ToList();
-                else
-                    adv = adv.OrderBy(x => x.Title).ToList();
-            }
-
-            var advDTO = _mapper.Map<List<AdvertisementsDTO>>(adv.Skip(page * 10 - 10).Take(10));
+            var advDTO = _mapper.Map<List<AdvertisementsDTO>>(advertisements.Skip(page * 10 - 10).Take(10));
 
             foreach (AdvertisementsDTO a in advDTO)
             {
