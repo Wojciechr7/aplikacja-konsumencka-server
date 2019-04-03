@@ -173,6 +173,63 @@ namespace WebApplication.Controllers
             };
         }
 
+        // GET: api/Advertisements/title/desc:2/content
+        [HttpGet("title/{type}:{page}/{content}")]
+        public async Task<ActionResult<AdverisementsWithPageToEndDTO>> BrowseAdv(string type, int page, string content)
+        {
+            type = type.ToLower();
+
+            if (page <= 0)
+                return StatusCode(417, "Number page must be greater than zero");
+
+            if (type != "asc" && type != "desc")
+                return StatusCode(417, "Type of sort not exist");
+
+            List<Advertisement> advertisements = await _context.Advertisements.ToListAsync();
+            var adv = new List<Advertisement>();
+
+            foreach(var a in advertisements)
+            {
+                if (a.Title.Contains(content) == true)
+                    adv.Add(a);
+            }
+
+            if (advertisements.Count < page * 10 - 10)
+                return NoContent();
+
+            if (type == "desc")
+                adv = adv.OrderByDescending(x => x.Title).ToList();
+            else
+                adv = adv.OrderBy(x => x.Title).ToList();
+
+            var advDTO = _mapper.Map<List<AdvertisementsDTO>>(adv.Skip(page * 10 - 10).Take(10));
+
+            foreach (AdvertisementsDTO a in advDTO)
+            {
+                var City = await _context.Cities.SingleOrDefaultAsync(x => x.Id == int.Parse(a.City));
+                a.City = City.Name;
+
+                var image = await _context.AdvertisementImages.Where(x => x.AdvertisementId == a.Id).ToListAsync();
+
+                if (image.Count > 0)
+                    a.Image = _mapper.Map<AdvertisementImage, ImageDTO>(image[0]);
+                else
+                    a.Image = null;
+            }
+
+            int pagesToEnd = await _context.Advertisements.CountAsync();
+            if (pagesToEnd % 10 == 0)
+                pagesToEnd = pagesToEnd / 10 - page;
+            else
+                pagesToEnd = pagesToEnd / 10 - page + 1;
+
+            return new AdverisementsWithPageToEndDTO
+            {
+                Advertisement = advDTO,
+                PagesToEnd = pagesToEnd
+            };
+        }
+
         // GET: api/Advertisements/latest/5
         [HttpGet("latest/{quantity}")]
         public async Task<ActionResult<IEnumerable<AdvertisementsDTO>>> GetLatestAdvertisements(int quantity)
