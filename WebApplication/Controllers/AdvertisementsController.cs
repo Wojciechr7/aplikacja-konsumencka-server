@@ -253,7 +253,7 @@ namespace WebApplication.Controllers
                     a.Image = null;
             }
 
-            int pagesToEnd = await _context.Advertisements.CountAsync();
+            int pagesToEnd = advertisements.Count();
             if (pagesToEnd % 10 == 0)
                 pagesToEnd = pagesToEnd / 10 - page;
             else
