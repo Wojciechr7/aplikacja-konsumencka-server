@@ -98,49 +98,49 @@ namespace WebApplication.Controllers
             if (type != "asc" && type != "desc")
                 return StatusCode(417, "Type of sort not exist");
 
-            List<Advertisement> advertisements = new List<Advertisement>();
+            List<Advertisement> advertisements = await _context.Advertisements.ToListAsync();
 
             if (parameter == "price" && type == "desc")
-                advertisements = await _context.Advertisements.OrderByDescending(x => x.Price).ToListAsync();
+                advertisements = advertisements.OrderByDescending(x => x.Price).ToList();
 
             else if (parameter == "city" && type == "desc")
-                advertisements = await _context.Advertisements.OrderByDescending(x => x.City).ToListAsync();
+                advertisements = advertisements.OrderByDescending(x => x.City).ToList();
 
             else if (parameter == "size" && type == "desc")
-                advertisements = await _context.Advertisements.OrderByDescending(x => x.Size).ToListAsync();
+                advertisements = advertisements.OrderByDescending(x => x.Size).ToList();
 
             else if (parameter == "category" && type == "desc")
-                advertisements = await _context.Advertisements.OrderByDescending(x => x.Category).ToListAsync();
+                advertisements = advertisements.OrderByDescending(x => x.Category).ToList();
 
             else if (parameter == "date" && type == "desc")
-                advertisements = await _context.Advertisements.OrderByDescending(x => x.Date).ToListAsync();
+                advertisements = advertisements.OrderByDescending(x => x.Date).ToList();
 
             else if (parameter == "city" && type == "asc")
-                advertisements = await _context.Advertisements.OrderBy(x => x.City).ToListAsync();
+                advertisements = advertisements.OrderBy(x => x.City).ToList();
 
             else if (parameter == "size" && type == "asc")
-                advertisements = await _context.Advertisements.OrderBy(x => x.Size).ToListAsync();
+                advertisements = advertisements.OrderBy(x => x.Size).ToList();
 
             else if (parameter == "category" && type == "asc")
-                advertisements = await _context.Advertisements.OrderBy(x => x.Category).ToListAsync();
+                advertisements = advertisements.OrderBy(x => x.Category).ToList();
 
             else if (parameter == "date" && type == "asc")
-                advertisements = await _context.Advertisements.OrderBy(x => x.Date).ToListAsync();
+                advertisements = advertisements.OrderBy(x => x.Date).ToList();
 
             else if (parameter == "price" && type == "asc")
-                advertisements = await _context.Advertisements.OrderBy(x => x.Price).ToListAsync();
+                advertisements = advertisements.OrderBy(x => x.Price).ToList();
 
             else if (parameter == "title" && type == "desc")
-                advertisements = await _context.Advertisements.OrderByDescending(x => x.Title).ToListAsync();
+                advertisements = advertisements.OrderByDescending(x => x.Title).ToList();
 
             else if (parameter == "title" && type == "asc")
-                advertisements = await _context.Advertisements.OrderBy(x => x.Title).ToListAsync();
+                advertisements = advertisements.OrderBy(x => x.Title).ToList();
 
             else if (parameter == "description" && type == "asc")
-                advertisements = await _context.Advertisements.OrderBy(x => x.Description).ToListAsync();
+                advertisements = advertisements.OrderBy(x => x.Description).ToList();
 
             else if (parameter == "description" && type == "desc")
-                advertisements = await _context.Advertisements.OrderByDescending(x => x.Description).ToListAsync();
+                advertisements = advertisements.OrderByDescending(x => x.Description).ToList();
 
             if (advertisements.Count < page * 10 - 10)
                 return NoContent();
